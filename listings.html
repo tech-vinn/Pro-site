@@ -6,57 +6,182 @@
 <title>All Listings | Aura Homes</title>
 <link rel="stylesheet" href="shared.css"/>
 <style>
-.listings-layout { display: grid; grid-template-columns: 300px 1fr; gap: 40px; align-items: start; padding: 60px; }
 
-/* FILTER SIDEBAR */
-.sidebar { position: sticky; top: 110px; background: var(--card-bg); border: 1px solid var(--border); padding: 32px; }
-.sidebar-title { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 300; margin-bottom: 28px; }
-.filter-group { margin-bottom: 28px; padding-bottom: 28px; border-bottom: 1px solid var(--border-sub); }
-.filter-label { font-size: 10px; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); margin-bottom: 14px; display: block; }
-.filter-options { display: flex; flex-wrap: wrap; gap: 8px; }
-.filter-chip {
-  padding: 7px 14px; border: 1px solid var(--border-sub); font-size: 12px;
-  color: var(--muted); cursor: none; transition: border-color .3s, color .3s, background .3s;
+/* ===== HERO BANNER ===== */
+.listings-hero {
+  height: 440px; position: relative; overflow: hidden;
+  display: flex; align-items: flex-end; margin-top: 0;
 }
-.filter-chip:hover, .filter-chip.active { border-color: var(--gold); color: var(--gold); background: var(--gold-dim); }
-.range-row { display: flex; gap: 10px; }
-.range-input { flex: 1; padding: 10px 12px; background: rgba(255,255,255,.04); border: 1px solid var(--border-sub); color: var(--canvas); font-family: 'DM Sans', sans-serif; font-size: 13px; outline: none; }
-.range-input:focus { border-color: var(--gold); }
-.range-input::placeholder { color: rgba(250,248,244,.25); }
-.checkbox-list { display: flex; flex-direction: column; gap: 10px; }
-.checkbox-item { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--muted); cursor: none; }
-.checkbox-item input { accent-color: var(--gold); width: 15px; height: 15px; cursor: none; }
-.checkbox-item:hover { color: var(--canvas); }
-.apply-btn { width: 100%; padding: 14px; background: var(--gold); border: none; color: var(--ink); font-size: 11px; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; cursor: none; transition: background .3s; margin-top: 8px; }
-.apply-btn:hover { background: var(--gold-light); }
-.clear-btn { width: 100%; padding: 12px; background: transparent; border: 1px solid var(--border-sub); color: var(--muted); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; cursor: none; transition: border-color .3s, color .3s; margin-top: 10px; }
-.clear-btn:hover { border-color: var(--canvas); color: var(--canvas); }
+.listings-hero-bg {
+  position: absolute; inset: 0;
+  display: grid; grid-template-columns: repeat(4,1fr); gap: 3px;
+}
+.listings-hero-bg img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  animation: slowPan 14s ease-in-out infinite alternate;
+}
+.listings-hero-bg img:nth-child(2){animation-delay:-3s;}
+.listings-hero-bg img:nth-child(3){animation-delay:-7s;}
+.listings-hero-bg img:nth-child(4){animation-delay:-11s;}
+@keyframes slowPan{from{transform:scale(1.08) translateY(2%);}to{transform:scale(1.08) translateY(-2%);}}
+.listings-hero-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(15,13,11,1) 0%, rgba(15,13,11,.5) 55%, rgba(15,13,11,.15) 100%);
+}
+.listings-hero-content {
+  position: relative; z-index: 2; padding: 0 60px 48px;
+  width: 100%; display: flex; justify-content: space-between; align-items: flex-end;
+}
+.listings-hero-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(44px,5.5vw,72px); font-weight: 300; line-height: .98;
+}
+.listings-hero-title em{font-style:italic;color:var(--gold);}
+.hero-stat-row{display:flex;gap:40px;}
+.hstat-num{font-family:'Cormorant Garamond',serif;font-size:38px;font-weight:300;color:var(--gold);display:block;}
+.hstat-lbl{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:rgba(250,248,244,.5);}
 
-/* RESULTS AREA */
-.results-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
-.results-count { font-size: 13px; color: var(--muted); }
-.results-count strong { color: var(--canvas); }
-.sort-wrap { display: flex; align-items: center; gap: 10px; }
-.sort-label { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
-.sort-select { padding: 8px 14px; background: var(--card-bg); border: 1px solid var(--border-sub); color: var(--canvas); font-family: 'DM Sans', sans-serif; font-size: 13px; outline: none; cursor: none; appearance: none; }
-.sort-select option { background: #1a1712; }
-.view-toggle { display: flex; gap: 2px; }
-.view-btn { width: 36px; height: 36px; border: 1px solid var(--border-sub); background: transparent; display: flex; align-items: center; justify-content: center; cursor: none; transition: border-color .3s, background .3s; font-size: 14px; }
-.view-btn.active, .view-btn:hover { border-color: var(--gold); background: var(--gold-dim); }
+/* ===== FEATURED CAROUSEL ===== */
+.featured-strip{background:var(--card-bg);border-bottom:1px solid var(--border);padding:44px 0;}
+.strip-head{display:flex;justify-content:space-between;align-items:center;padding:0 60px;margin-bottom:26px;}
+.car-controls{display:flex;gap:10px;}
+.car-btn{width:40px;height:40px;border:1px solid var(--border);background:transparent;color:var(--muted);font-size:16px;cursor:none;display:flex;align-items:center;justify-content:center;transition:border-color .3s,color .3s,background .3s;}
+.car-btn:hover{border-color:var(--gold);color:var(--gold);background:var(--gold-dim);}
+.car-track-wrap{overflow:hidden;padding:0 60px;}
+.car-track{display:flex;gap:18px;transition:transform .5s cubic-bezier(.22,1,.36,1);}
+.car-slide{flex-shrink:0;width:calc(33.333% - 12px);position:relative;overflow:hidden;cursor:none;}
+.car-slide img{width:100%;height:250px;object-fit:cover;display:block;transition:transform .7s cubic-bezier(.22,1,.36,1);}
+.car-slide:hover img{transform:scale(1.07);}
+.car-slide-ov{position:absolute;inset:0;background:linear-gradient(to top,rgba(15,13,11,.88) 0%,transparent 60%);display:flex;flex-direction:column;justify-content:flex-end;padding:20px;}
+.car-badge{position:absolute;top:12px;left:12px;background:var(--gold);color:var(--ink);font-size:9px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;padding:4px 10px;}
+.car-price{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;color:var(--gold);}
+.car-name{font-size:13px;font-weight:500;margin-top:2px;}
+.car-loc{font-size:11px;color:rgba(250,248,244,.55);margin-top:2px;}
 
-.prop-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 24px; }
-.prop-grid.three { grid-template-columns: repeat(3,1fr); }
+/* ===== MOSAIC PHOTO BAND ===== */
+.mosaic-wrap{padding:48px 60px 0;}
+.mosaic-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;}
+.mosaic-grid{
+  display:grid;
+  grid-template-columns:repeat(6,1fr);
+  grid-template-rows:190px 190px;
+  gap:4px;
+}
+.mosaic-cell{overflow:hidden;position:relative;cursor:none;}
+.mosaic-cell img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .65s;}
+.mosaic-cell:hover img{transform:scale(1.09);}
+.mosaic-cell:nth-child(1){grid-column:span 2;grid-row:span 2;}
+.mosaic-cell:nth-child(4){grid-column:span 2;}
+.mosaic-cell:nth-child(8){grid-column:span 2;}
+.mosaic-cell-ov{position:absolute;inset:0;background:linear-gradient(to top,rgba(15,13,11,.72) 0%,transparent 55%);display:flex;flex-direction:column;justify-content:flex-end;padding:14px;opacity:0;transition:opacity .4s;}
+.mosaic-cell:hover .mosaic-cell-ov{opacity:1;}
+.mosaic-cell-label{font-size:12px;font-weight:500;}
+.mosaic-cell-sub{font-size:10px;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;margin-top:2px;}
 
-/* LOAD MORE / PAGINATION */
-.pagination { display: flex; justify-content: center; align-items: center; gap: 6px; margin-top: 56px; }
-.page-btn { width: 40px; height: 40px; border: 1px solid var(--border-sub); background: transparent; color: var(--muted); font-size: 13px; cursor: none; transition: border-color .3s, color .3s, background .3s; display: flex; align-items: center; justify-content: center; }
-.page-btn.active, .page-btn:hover { border-color: var(--gold); color: var(--gold); background: var(--gold-dim); }
+/* ===== MAIN LAYOUT ===== */
+.listings-layout{display:grid;grid-template-columns:290px 1fr;gap:40px;padding:50px 60px;}
 
-/* ACTIVE FILTERS */
-.active-filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
-.active-tag { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border: 1px solid var(--border); font-size: 11px; color: var(--gold); }
-.active-tag button { background: none; border: none; color: var(--muted); cursor: none; font-size: 14px; line-height: 1; transition: color .3s; }
-.active-tag button:hover { color: var(--canvas); }
+/* SIDEBAR */
+.sidebar{position:sticky;top:110px;background:var(--card-bg);border:1px solid var(--border);padding:28px;}
+.sidebar-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:300;margin-bottom:24px;padding-bottom:18px;border-bottom:1px solid var(--border-sub);}
+.filter-group{margin-bottom:22px;padding-bottom:22px;border-bottom:1px solid var(--border-sub);}
+.filter-group:last-of-type{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+.filter-label{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:11px;display:block;}
+.filter-options{display:flex;flex-wrap:wrap;gap:7px;}
+.filter-chip{padding:6px 13px;border:1px solid var(--border-sub);font-size:11px;color:var(--muted);cursor:none;transition:border-color .3s,color .3s,background .3s;}
+.filter-chip:hover,.filter-chip.active{border-color:var(--gold);color:var(--gold);background:var(--gold-dim);}
+.range-row{display:flex;gap:8px;}
+.range-input{flex:1;padding:10px 11px;background:rgba(255,255,255,.04);border:1px solid var(--border-sub);color:var(--canvas);font-family:'DM Sans',sans-serif;font-size:12px;outline:none;}
+.range-input:focus{border-color:var(--gold);}
+.range-input::placeholder{color:rgba(250,248,244,.22);}
+.checkbox-list{display:flex;flex-direction:column;gap:9px;}
+.checkbox-item{display:flex;align-items:center;gap:9px;font-size:12px;color:var(--muted);cursor:none;}
+.checkbox-item input{accent-color:var(--gold);width:14px;height:14px;}
+.checkbox-item:hover{color:var(--canvas);}
+.apply-btn{width:100%;padding:13px;background:var(--gold);border:none;color:var(--ink);font-size:11px;font-weight:500;letter-spacing:.15em;text-transform:uppercase;cursor:none;transition:background .3s;margin-top:18px;}
+.apply-btn:hover{background:var(--gold-light);}
+.clear-btn{width:100%;padding:11px;background:transparent;border:1px solid var(--border-sub);color:var(--muted);font-size:11px;letter-spacing:.13em;text-transform:uppercase;cursor:none;margin-top:8px;transition:border-color .3s,color .3s;}
+.clear-btn:hover{border-color:var(--canvas);color:var(--canvas);}
+
+/* Results head */
+.results-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;}
+.results-count{font-size:13px;color:var(--muted);}
+.results-count strong{color:var(--canvas);}
+.sort-wrap{display:flex;align-items:center;gap:10px;}
+.sort-lbl{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);}
+.sort-sel{padding:8px 13px;background:var(--card-bg);border:1px solid var(--border-sub);color:var(--canvas);font-family:'DM Sans',sans-serif;font-size:12px;outline:none;cursor:none;appearance:none;}
+.sort-sel option{background:#1a1712;}
+.view-toggle{display:flex;gap:2px;}
+.view-btn{width:34px;height:34px;border:1px solid var(--border-sub);background:transparent;display:flex;align-items:center;justify-content:center;cursor:none;transition:border-color .3s,background .3s;font-size:13px;}
+.view-btn.active,.view-btn:hover{border-color:var(--gold);background:var(--gold-dim);}
+.active-filters{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:20px;}
+.active-tag{display:inline-flex;align-items:center;gap:6px;padding:4px 11px;border:1px solid var(--border);font-size:11px;color:var(--gold);}
+.active-tag button{background:none;border:none;color:var(--muted);cursor:none;font-size:13px;line-height:1;transition:color .3s;}
+.active-tag button:hover{color:var(--canvas);}
+
+/* ===== PROPERTY GRID ===== */
+.prop-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:22px;}
+
+/* WIDE CARD */
+.prop-wide{
+  grid-column:span 2;display:grid;grid-template-columns:1.4fr 1fr;
+  background:var(--card-bg);border:1px solid var(--border);overflow:hidden;cursor:none;
+  transition:border-color .4s,transform .4s var(--ease);
+}
+.prop-wide:hover{border-color:var(--gold);transform:translateY(-4px);}
+.wide-img-area{position:relative;overflow:hidden;min-height:320px;}
+.wide-img-area .main-img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .7s;}
+.prop-wide:hover .wide-img-area .main-img{transform:scale(1.05);}
+.wide-thumb-row{position:absolute;bottom:12px;left:12px;display:flex;gap:5px;}
+.wthumb{width:52px;height:40px;object-fit:cover;border:1px solid rgba(255,255,255,.3);opacity:.72;transition:opacity .3s;}
+.wthumb:hover{opacity:1;}
+.wide-body{padding:32px;display:flex;flex-direction:column;justify-content:space-between;}
+.w-badge{display:inline-block;background:var(--gold);color:var(--ink);font-size:9px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;padding:4px 11px;margin-bottom:16px;}
+.w-price{font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:300;color:var(--gold);}
+.w-price sub{font-size:16px;color:var(--muted);}
+.w-name{font-size:22px;font-weight:500;margin:6px 0 4px;}
+.w-loc{font-size:13px;color:var(--muted);margin-bottom:14px;}
+.w-desc{font-size:13px;color:rgba(250,248,244,.55);line-height:1.7;margin-bottom:16px;}
+.w-meta{display:flex;gap:14px;flex-wrap:wrap;font-size:11px;letter-spacing:.08em;color:var(--muted);text-transform:uppercase;margin-bottom:16px;}
+.w-tags{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:22px;}
+.w-tag{padding:4px 10px;border:1px solid var(--border-sub);font-size:10px;color:var(--muted);}
+.w-actions{display:flex;gap:10px;}
+
+/* STANDARD CARD */
+.prop-card{background:var(--card-bg);border:1px solid var(--border);overflow:hidden;cursor:none;transition:border-color .4s,transform .4s var(--ease);}
+.prop-card:hover{border-color:var(--gold);transform:translateY(-5px);}
+.card-img-wrap{position:relative;overflow:hidden;height:240px;}
+.card-img-wrap .img-main{width:100%;height:100%;object-fit:cover;display:block;position:absolute;inset:0;transition:opacity .45s,transform .6s var(--ease);}
+.card-img-wrap .img-hover{width:100%;height:100%;object-fit:cover;display:block;position:absolute;inset:0;opacity:0;transition:opacity .45s;}
+.prop-card:hover .img-main{opacity:0;transform:scale(1.06);}
+.prop-card:hover .img-hover{opacity:1;}
+.card-badge{position:absolute;top:12px;left:12px;background:var(--gold);color:var(--ink);font-size:9px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;padding:4px 10px;z-index:3;}
+.card-badge.out{background:transparent;border:1px solid var(--gold);color:var(--gold);}
+.card-fav{position:absolute;top:12px;right:12px;width:32px;height:32px;border-radius:50%;background:rgba(15,13,11,.6);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:13px;cursor:none;z-index:3;transition:background .3s;}
+.card-fav:hover{background:rgba(184,147,90,.2);}
+.card-photo-count{position:absolute;bottom:10px;right:10px;background:rgba(15,13,11,.7);border:1px solid rgba(255,255,255,.1);font-size:10px;color:rgba(250,248,244,.7);padding:3px 8px;letter-spacing:.1em;z-index:3;}
+.img-dot-row{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);display:flex;gap:5px;z-index:3;}
+.idot{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.35);transition:background .3s;}
+.idot.on,.prop-card:hover .idot:nth-child(2){background:var(--gold);}
+
+/* MINI PHOTO STRIP */
+.card-strip{display:flex;gap:3px;height:52px;border-bottom:1px solid var(--border-sub);}
+.card-strip img{flex:1;object-fit:cover;opacity:.62;transition:opacity .3s;}
+.card-strip img:hover{opacity:1;}
+
+.card-body{padding:22px;}
+.c-price{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:300;color:var(--gold);margin-bottom:3px;}
+.c-price sub{font-size:13px;color:var(--muted);}
+.c-name{font-size:15px;font-weight:500;margin-bottom:3px;}
+.c-loc{font-size:12px;color:var(--muted);margin-bottom:14px;}
+.c-meta{display:flex;gap:12px;padding-top:14px;border-top:1px solid var(--border-sub);font-size:10px;letter-spacing:.08em;color:var(--muted);text-transform:uppercase;flex-wrap:wrap;}
+.c-link{display:inline-block;margin-top:13px;color:var(--gold);font-size:11px;letter-spacing:.12em;text-decoration:none;text-transform:uppercase;transition:letter-spacing .3s;}
+.c-link:hover{letter-spacing:.19em;}
+
+/* PAGINATION */
+.pagination{display:flex;justify-content:center;align-items:center;gap:5px;margin-top:52px;padding-bottom:20px;}
+.pag-btn{width:38px;height:38px;border:1px solid var(--border-sub);background:transparent;color:var(--muted);font-size:13px;cursor:none;display:flex;align-items:center;justify-content:center;transition:border-color .3s,color .3s,background .3s;}
+.pag-btn.on,.pag-btn:hover{border-color:var(--gold);color:var(--gold);background:var(--gold-dim);}
 </style>
 </head>
 <body>
@@ -75,234 +200,323 @@
   <a href="contact.html" class="nav-cta">Book a Tour</a>
 </nav>
 
-<!-- PAGE HEADER -->
-<div class="page-header" data-bg-text="LISTINGS">
-  <div class="breadcrumb"><a href="index.html">Home</a><span>/</span><span>Listings</span></div>
-  <div class="section-tag">Available Now</div>
-  <h1 class="section-h2">Browse All<br/><em>Properties</em></h1>
-  <p class="section-sub" style="margin-top:12px">320+ verified apartments, studios and penthouses across Dar es Salaam's finest neighbourhoods.</p>
+<!-- ===== HERO: 4-PANEL ANIMATED PHOTO BANNER ===== -->
+<div class="listings-hero">
+  <div class="listings-hero-bg">
+    <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&q=80" alt="luxury living"/>
+    <img src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=600&q=80" alt="penthouse"/>
+    <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600&q=80" alt="villa"/>
+    <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=600&q=80" alt="interior"/>
+  </div>
+  <div class="listings-hero-overlay"></div>
+  <div class="listings-hero-content">
+    <div>
+      <div class="breadcrumb" style="margin-bottom:12px"><a href="index.html">Home</a><span>/</span><span>Listings</span></div>
+      <h1 class="listings-hero-title">Browse All<br/><em>Residences</em></h1>
+    </div>
+    <div class="hero-stat-row">
+      <div><span class="hstat-num">320+</span><span class="hstat-lbl">Properties</span></div>
+      <div><span class="hstat-num">12</span><span class="hstat-lbl">Areas</span></div>
+      <div><span class="hstat-num">98%</span><span class="hstat-lbl">Satisfaction</span></div>
+    </div>
+  </div>
 </div>
 
-<!-- LAYOUT -->
-<div class="listings-layout">
+<!-- ===== EDITOR'S PICKS CAROUSEL ===== -->
+<div class="featured-strip">
+  <div class="strip-head">
+    <div>
+      <div class="section-tag">Editor's Picks</div>
+      <h2 style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300">This Week's <em style="font-style:italic;color:var(--gold)">Highlights</em></h2>
+    </div>
+    <div class="car-controls">
+      <button class="car-btn" id="carPrev">←</button>
+      <button class="car-btn" id="carNext">→</button>
+    </div>
+  </div>
+  <div class="car-track-wrap">
+    <div class="car-track" id="carTrack">
+      <div class="car-slide"><img src="https://images.unsplash.com/photo-1554995207-c18c203602cb?w=700&q=80" alt="Azure"/><div class="car-slide-ov"><div class="car-badge">New</div><div class="car-price">$4,500/mo</div><div class="car-name">Azure Sky Penthouse</div><div class="car-loc">📍 Oyster Bay</div></div></div>
+      <div class="car-slide"><img src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=700&q=80" alt="Oasis"/><div class="car-slide-ov"><div class="car-badge">Featured</div><div class="car-price">$3,200/mo</div><div class="car-name">The Oasis Penthouse</div><div class="car-loc">📍 Masaki</div></div></div>
+      <div class="car-slide"><img src="https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?w=700&q=80" alt="Garden"/><div class="car-slide-ov"><div class="car-price">$1,450/mo</div><div class="car-name">Garden Court Residence</div><div class="car-loc">📍 Masaki</div></div></div>
+      <div class="car-slide"><img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=700&q=80" alt="Msasani"/><div class="car-slide-ov"><div class="car-price">$2,100/mo</div><div class="car-name">Msasani Shore Apartment</div><div class="car-loc">📍 Msasani</div></div></div>
+      <div class="car-slide"><img src="https://images.unsplash.com/photo-1484154218962-a197022b5858?w=700&q=80" alt="Kinondoni"/><div class="car-slide-ov"><div class="car-price">$950/mo</div><div class="car-name">The Kinondoni Classic</div><div class="car-loc">📍 Kinondoni</div></div></div>
+      <div class="car-slide"><img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=700&q=80" alt="Harbour"/><div class="car-slide-ov"><div class="car-badge" style="background:transparent;border:1px solid var(--gold);color:var(--gold)">New</div><div class="car-price">$780/mo</div><div class="car-name">Harbour View Studio</div><div class="car-loc">📍 Oyster Bay</div></div></div>
+    </div>
+  </div>
+</div>
 
-  <!-- SIDEBAR -->
+<!-- ===== INTERIOR PHOTO MOSAIC ===== -->
+<div class="mosaic-wrap">
+  <div class="mosaic-head">
+    <div class="section-tag">Inside Aura Properties</div>
+    <a href="#" style="font-size:11px;color:var(--gold);text-decoration:none;letter-spacing:.12em;text-transform:uppercase">View All Photos →</a>
+  </div>
+  <div class="mosaic-grid">
+    <div class="mosaic-cell"><img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=900&q=80" alt="living"/><div class="mosaic-cell-ov"><div class="mosaic-cell-label">Open Plan Living</div><div class="mosaic-cell-sub">Masaki Properties</div></div></div>
+    <div class="mosaic-cell"><img src="https://images.unsplash.com/photo-1484154218962-a197022b5858?w=500&q=80" alt="kitchen"/><div class="mosaic-cell-ov"><div class="mosaic-cell-label">Chef's Kitchen</div><div class="mosaic-cell-sub">Premium Finish</div></div></div>
+    <div class="mosaic-cell"><img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=500&q=80" alt="bedroom"/><div class="mosaic-cell-ov"><div class="mosaic-cell-label">Master Bedroom</div><div class="mosaic-cell-sub">Sea Views</div></div></div>
+    <div class="mosaic-cell"><img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=700&q=80" alt="pool"/><div class="mosaic-cell-ov"><div class="mosaic-cell-label">Private Pool</div><div class="mosaic-cell-sub">Select Penthouses</div></div></div>
+    <div class="mosaic-cell"><img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=500&q=80" alt="dining"/><div class="mosaic-cell-ov"><div class="mosaic-cell-label">Dining Area</div><div class="mosaic-cell-sub">Oyster Bay</div></div></div>
+    <div class="mosaic-cell"><img src="https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=500&q=80" alt="bath"/><div class="mosaic-cell-ov"><div class="mosaic-cell-label">Luxury Bathroom</div><div class="mosaic-cell-sub">Rainfall Shower</div></div></div>
+    <div class="mosaic-cell"><img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=700&q=80" alt="exterior"/><div class="mosaic-cell-ov"><div class="mosaic-cell-label">Building Exterior</div><div class="mosaic-cell-sub">Mikocheni</div></div></div>
+    <div class="mosaic-cell"><img src="https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=500&q=80" alt="terrace"/><div class="mosaic-cell-ov"><div class="mosaic-cell-label">Private Terrace</div><div class="mosaic-cell-sub">City Views</div></div></div>
+    <div class="mosaic-cell"><img src="https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?w=500&q=80" alt="lounge"/><div class="mosaic-cell-ov"><div class="mosaic-cell-label">Lounge Area</div><div class="mosaic-cell-sub">Garden Court</div></div></div>
+  </div>
+</div>
+
+<!-- ===== MAIN LISTINGS + SIDEBAR ===== -->
+<div class="listings-layout">
   <aside class="sidebar">
     <div class="sidebar-title">Filter Properties</div>
-
-    <div class="filter-group">
-      <span class="filter-label">Property Type</span>
-      <div class="filter-options">
-        <div class="filter-chip active">All</div>
-        <div class="filter-chip">Studio</div>
-        <div class="filter-chip">1 Bed</div>
-        <div class="filter-chip">2 Beds</div>
-        <div class="filter-chip">3 Beds</div>
-        <div class="filter-chip">Penthouse</div>
-        <div class="filter-chip">Furnished</div>
-      </div>
-    </div>
-
-    <div class="filter-group">
-      <span class="filter-label">Price Range (per month)</span>
-      <div class="range-row">
-        <input class="range-input" type="text" placeholder="Min $"/>
-        <input class="range-input" type="text" placeholder="Max $"/>
-      </div>
-    </div>
-
-    <div class="filter-group">
-      <span class="filter-label">Bedrooms</span>
-      <div class="filter-options">
-        <div class="filter-chip">Any</div>
-        <div class="filter-chip">Studio</div>
-        <div class="filter-chip">1</div>
-        <div class="filter-chip">2</div>
-        <div class="filter-chip">3</div>
-        <div class="filter-chip">4+</div>
-      </div>
-    </div>
-
-    <div class="filter-group">
-      <span class="filter-label">Neighbourhood</span>
-      <div class="checkbox-list">
-        <label class="checkbox-item"><input type="checkbox" checked/> Masaki</label>
-        <label class="checkbox-item"><input type="checkbox" checked/> Oyster Bay</label>
-        <label class="checkbox-item"><input type="checkbox"/> Mikocheni</label>
-        <label class="checkbox-item"><input type="checkbox"/> Upanga</label>
-        <label class="checkbox-item"><input type="checkbox"/> Msasani</label>
-        <label class="checkbox-item"><input type="checkbox"/> Kariakoo</label>
-        <label class="checkbox-item"><input type="checkbox"/> Kinondoni</label>
-      </div>
-    </div>
-
-    <div class="filter-group" style="border:none;padding:0;margin:0">
-      <span class="filter-label">Amenities</span>
-      <div class="checkbox-list">
-        <label class="checkbox-item"><input type="checkbox"/> Swimming Pool</label>
-        <label class="checkbox-item"><input type="checkbox"/> Gym / Fitness</label>
-        <label class="checkbox-item"><input type="checkbox"/> Parking</label>
-        <label class="checkbox-item"><input type="checkbox"/> 24hr Security</label>
-        <label class="checkbox-item"><input type="checkbox"/> Generator Backup</label>
-        <label class="checkbox-item"><input type="checkbox"/> Pet Friendly</label>
-        <label class="checkbox-item"><input type="checkbox"/> Sea View</label>
-        <label class="checkbox-item"><input type="checkbox"/> Serviced</label>
-      </div>
-    </div>
-
+    <div class="filter-group"><span class="filter-label">Property Type</span><div class="filter-options"><div class="filter-chip active">All</div><div class="filter-chip">Studio</div><div class="filter-chip">1 Bed</div><div class="filter-chip">2 Beds</div><div class="filter-chip">3 Beds</div><div class="filter-chip">Penthouse</div><div class="filter-chip">Furnished</div></div></div>
+    <div class="filter-group"><span class="filter-label">Price Range /mo</span><div class="range-row"><input class="range-input" type="text" placeholder="Min $"/><input class="range-input" type="text" placeholder="Max $"/></div></div>
+    <div class="filter-group"><span class="filter-label">Bedrooms</span><div class="filter-options"><div class="filter-chip active">Any</div><div class="filter-chip">Studio</div><div class="filter-chip">1</div><div class="filter-chip">2</div><div class="filter-chip">3</div><div class="filter-chip">4+</div></div></div>
+    <div class="filter-group"><span class="filter-label">Neighbourhood</span><div class="checkbox-list"><label class="checkbox-item"><input type="checkbox" checked/> Masaki</label><label class="checkbox-item"><input type="checkbox" checked/> Oyster Bay</label><label class="checkbox-item"><input type="checkbox"/> Mikocheni</label><label class="checkbox-item"><input type="checkbox"/> Upanga</label><label class="checkbox-item"><input type="checkbox"/> Msasani</label><label class="checkbox-item"><input type="checkbox"/> Kinondoni</label></div></div>
+    <div class="filter-group"><span class="filter-label">Amenities</span><div class="checkbox-list"><label class="checkbox-item"><input type="checkbox"/> Swimming Pool</label><label class="checkbox-item"><input type="checkbox"/> Gym</label><label class="checkbox-item"><input type="checkbox"/> Parking</label><label class="checkbox-item"><input type="checkbox"/> 24hr Security</label><label class="checkbox-item"><input type="checkbox"/> Generator</label><label class="checkbox-item"><input type="checkbox"/> Sea View</label><label class="checkbox-item"><input type="checkbox"/> Pet Friendly</label></div></div>
     <button class="apply-btn">Apply Filters</button>
     <button class="clear-btn">Clear All</button>
   </aside>
 
-  <!-- RESULTS -->
   <div>
     <div class="active-filters">
       <div class="active-tag">Masaki <button>×</button></div>
       <div class="active-tag">Oyster Bay <button>×</button></div>
       <div class="active-tag">All Types <button>×</button></div>
     </div>
-
     <div class="results-head">
       <p class="results-count">Showing <strong>18</strong> of 320 properties</p>
       <div class="sort-wrap">
-        <span class="sort-label">Sort:</span>
-        <select class="sort-select">
-          <option>Newest First</option>
-          <option>Price: Low to High</option>
-          <option>Price: High to Low</option>
-          <option>Most Popular</option>
-        </select>
-        <div class="view-toggle">
-          <button class="view-btn active">⊞</button>
-          <button class="view-btn">≡</button>
-        </div>
+        <span class="sort-lbl">Sort:</span>
+        <select class="sort-sel"><option>Newest First</option><option>Price: Low to High</option><option>Price: High to Low</option><option>Most Popular</option></select>
+        <div class="view-toggle"><button class="view-btn active">⊞</button><button class="view-btn">≡</button></div>
       </div>
     </div>
 
     <div class="prop-grid">
 
-      <div class="prop-card reveal">
-        <div class="prop-card-img-wrap">
-          <img class="prop-card-img" src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=700&q=80" alt="Penthouse"/>
-          <div class="prop-card-badge">Featured</div><div class="prop-card-fav">♡</div>
+      <!-- WIDE FEATURED CARD -->
+      <div class="prop-wide reveal">
+        <div class="wide-img-area">
+          <img class="main-img" src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=900&q=80" alt="Oasis"/>
+          <div class="wide-thumb-row">
+            <img class="wthumb" src="https://images.unsplash.com/photo-1484154218962-a197022b5858?w=150&q=70" alt="k"/>
+            <img class="wthumb" src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=150&q=70" alt="b"/>
+            <img class="wthumb" src="https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=150&q=70" alt="ba"/>
+            <img class="wthumb" src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=150&q=70" alt="p"/>
+          </div>
         </div>
-        <div class="prop-card-body">
-          <div class="prop-price">$3,200 <sub>/mo</sub></div>
-          <div class="prop-name">The Oasis Penthouse</div>
-          <div class="prop-loc">📍 Masaki, Dar es Salaam</div>
-          <div class="prop-meta"><span>🛏 3 Beds</span><span>🚿 2 Baths</span><span>📐 180 m²</span></div>
-          <a href="property.html" style="display:inline-block;margin-top:18px;" class="btn-gold-outline">View Details</a>
+        <div class="wide-body">
+          <div>
+            <div class="w-badge">⭐ Featured This Week</div>
+            <div class="w-price">$3,200 <sub>/mo</sub></div>
+            <div class="w-name">The Oasis Penthouse</div>
+            <div class="w-loc">📍 Masaki Peninsula, Dar es Salaam</div>
+            <div class="w-desc">Panoramic Indian Ocean views, private terrace, floor-to-ceiling windows across all 3 bedrooms. One of DSM's most coveted addresses.</div>
+            <div class="w-meta"><span>🛏 3 Beds</span><span>🚿 2 Baths</span><span>📐 180 m²</span><span>🏢 14th Floor</span></div>
+            <div class="w-tags"><span class="w-tag">Sea View</span><span class="w-tag">Furnished</span><span class="w-tag">Pool</span><span class="w-tag">Parking</span><span class="w-tag">Pet Friendly</span></div>
+          </div>
+          <div class="w-actions">
+            <a href="property.html" class="btn-primary" style="font-size:11px;padding:13px 24px">View Full Details</a>
+            <a href="contact.html" class="btn-ghost" style="font-size:11px;padding:13px 20px">Book Tour</a>
+          </div>
         </div>
       </div>
 
+      <!-- CARD 1 -->
+      <div class="prop-card reveal">
+        <div class="card-img-wrap">
+          <img class="img-main" src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=700&q=80" alt="studio"/>
+          <img class="img-hover" src="https://images.unsplash.com/photo-1484154218962-a197022b5858?w=700&q=80" alt="studio int"/>
+          <div class="card-badge out">New</div><div class="card-fav">♡</div>
+          <div class="card-photo-count">📷 8 Photos</div>
+          <div class="img-dot-row"><div class="idot on"></div><div class="idot"></div><div class="idot"></div></div>
+        </div>
+        <div class="card-strip">
+          <img src="https://images.unsplash.com/photo-1484154218962-a197022b5858?w=200&q=60" alt=""/>
+          <img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=200&q=60" alt=""/>
+          <img src="https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=200&q=60" alt=""/>
+          <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=200&q=60" alt=""/>
+        </div>
+        <div class="card-body">
+          <div class="c-price">$780 <sub>/mo</sub></div><div class="c-name">Harbour View Studio</div>
+          <div class="c-loc">📍 Oyster Bay</div>
+          <div class="c-meta"><span>🛏 Studio</span><span>🚿 1 Bath</span><span>📐 52 m²</span></div>
+          <a href="property.html" class="c-link">View Details →</a>
+        </div>
+      </div>
+
+      <!-- CARD 2 -->
       <div class="prop-card reveal reveal-d1">
-        <div class="prop-card-img-wrap">
-          <img class="prop-card-img" src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=700&q=80" alt="Studio"/>
-          <div class="prop-card-badge" style="background:transparent;border:1px solid var(--gold);color:var(--gold);">New</div><div class="prop-card-fav">♡</div>
+        <div class="card-img-wrap">
+          <img class="img-main" src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=700&q=80" alt="serengeti"/>
+          <img class="img-hover" src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=700&q=80" alt="serengeti int"/>
+          <div class="card-badge out" style="border-color:var(--gold)">Popular</div><div class="card-fav">♡</div>
+          <div class="card-photo-count">📷 12 Photos</div>
+          <div class="img-dot-row"><div class="idot on"></div><div class="idot"></div><div class="idot"></div></div>
         </div>
-        <div class="prop-card-body">
-          <div class="prop-price">$780 <sub>/mo</sub></div>
-          <div class="prop-name">Harbour View Studio</div>
-          <div class="prop-loc">📍 Oyster Bay</div>
-          <div class="prop-meta"><span>🛏 Studio</span><span>🚿 1 Bath</span><span>📐 52 m²</span></div>
-          <a href="property.html" style="display:inline-block;margin-top:18px;" class="btn-gold-outline">View Details</a>
+        <div class="card-strip">
+          <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=200&q=60" alt=""/>
+          <img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=200&q=60" alt=""/>
+          <img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=200&q=60" alt=""/>
+          <img src="https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?w=200&q=60" alt=""/>
         </div>
-      </div>
-
-      <div class="prop-card reveal reveal-d2">
-        <div class="prop-card-img-wrap">
-          <img class="prop-card-img" src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=700&q=80" alt="Villa"/>
-          <div class="prop-card-fav">♡</div>
-        </div>
-        <div class="prop-card-body">
-          <div class="prop-price">$1,950 <sub>/mo</sub></div>
-          <div class="prop-name">Serengeti Residences</div>
-          <div class="prop-loc">📍 Mikocheni</div>
-          <div class="prop-meta"><span>🛏 2 Beds</span><span>🚿 2 Baths</span><span>📐 120 m²</span></div>
-          <a href="property.html" style="display:inline-block;margin-top:18px;" class="btn-gold-outline">View Details</a>
+        <div class="card-body">
+          <div class="c-price">$1,950 <sub>/mo</sub></div><div class="c-name">Serengeti Residences</div>
+          <div class="c-loc">📍 Mikocheni</div>
+          <div class="c-meta"><span>🛏 2 Beds</span><span>🚿 2 Baths</span><span>📐 120 m²</span></div>
+          <a href="property.html" class="c-link">View Details →</a>
         </div>
       </div>
 
-      <div class="prop-card reveal reveal-d3">
-        <div class="prop-card-img-wrap">
-          <img class="prop-card-img" src="https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=700&q=80" alt="Flat"/>
-          <div class="prop-card-badge" style="background:transparent;border:1px solid var(--gold);color:var(--gold);">Popular</div><div class="prop-card-fav">♡</div>
-        </div>
-        <div class="prop-card-body">
-          <div class="prop-price">$1,200 <sub>/mo</sub></div>
-          <div class="prop-name">Coral Bay Flat</div>
-          <div class="prop-loc">📍 Upanga</div>
-          <div class="prop-meta"><span>🛏 2 Beds</span><span>🚿 1 Bath</span><span>📐 88 m²</span></div>
-          <a href="property.html" style="display:inline-block;margin-top:18px;" class="btn-gold-outline">View Details</a>
-        </div>
-      </div>
-
+      <!-- CARD 3 -->
       <div class="prop-card reveal">
-        <div class="prop-card-img-wrap">
-          <img class="prop-card-img" src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=700&q=80" alt="Modern"/>
-          <div class="prop-card-fav">♡</div>
+        <div class="card-img-wrap">
+          <img class="img-main" src="https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=700&q=80" alt="coral"/>
+          <img class="img-hover" src="https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?w=700&q=80" alt="coral int"/>
+          <div class="card-fav">♡</div>
+          <div class="card-photo-count">📷 9 Photos</div>
+          <div class="img-dot-row"><div class="idot on"></div><div class="idot"></div></div>
         </div>
-        <div class="prop-card-body">
-          <div class="prop-price">$2,100 <sub>/mo</sub></div>
-          <div class="prop-name">Msasani Shore Apartment</div>
-          <div class="prop-loc">📍 Msasani</div>
-          <div class="prop-meta"><span>🛏 3 Beds</span><span>🚿 2 Baths</span><span>📐 145 m²</span></div>
-          <a href="property.html" style="display:inline-block;margin-top:18px;" class="btn-gold-outline">View Details</a>
+        <div class="card-strip">
+          <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=200&q=60" alt=""/>
+          <img src="https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=200&q=60" alt=""/>
+          <img src="https://images.unsplash.com/photo-1484154218962-a197022b5858?w=200&q=60" alt=""/>
+          <img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=200&q=60" alt=""/>
+        </div>
+        <div class="card-body">
+          <div class="c-price">$1,200 <sub>/mo</sub></div><div class="c-name">Coral Bay Flat</div>
+          <div class="c-loc">📍 Upanga</div>
+          <div class="c-meta"><span>🛏 2 Beds</span><span>🚿 1 Bath</span><span>📐 88 m²</span></div>
+          <a href="property.html" class="c-link">View Details →</a>
         </div>
       </div>
 
+      <!-- CARD 4 -->
       <div class="prop-card reveal reveal-d1">
-        <div class="prop-card-img-wrap">
-          <img class="prop-card-img" src="https://images.unsplash.com/photo-1484154218962-a197022b5858?w=700&q=80" alt="Kitchen"/>
-          <div class="prop-card-fav">♡</div>
+        <div class="card-img-wrap">
+          <img class="img-main" src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=700&q=80" alt="msasani"/>
+          <img class="img-hover" src="https://images.unsplash.com/photo-1554995207-c18c203602cb?w=700&q=80" alt="msasani int"/>
+          <div class="card-fav">♡</div>
+          <div class="card-photo-count">📷 14 Photos</div>
+          <div class="img-dot-row"><div class="idot on"></div><div class="idot"></div><div class="idot"></div></div>
         </div>
-        <div class="prop-card-body">
-          <div class="prop-price">$950 <sub>/mo</sub></div>
-          <div class="prop-name">The Kinondoni Classic</div>
-          <div class="prop-loc">📍 Kinondoni</div>
-          <div class="prop-meta"><span>🛏 1 Bed</span><span>🚿 1 Bath</span><span>📐 65 m²</span></div>
-          <a href="property.html" style="display:inline-block;margin-top:18px;" class="btn-gold-outline">View Details</a>
+        <div class="card-strip">
+          <img src="https://images.unsplash.com/photo-1554995207-c18c203602cb?w=200&q=60" alt=""/>
+          <img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=200&q=60" alt=""/>
+          <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=200&q=60" alt=""/>
+          <img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=200&q=60" alt=""/>
+        </div>
+        <div class="card-body">
+          <div class="c-price">$2,100 <sub>/mo</sub></div><div class="c-name">Msasani Shore Apartment</div>
+          <div class="c-loc">📍 Msasani</div>
+          <div class="c-meta"><span>🛏 3 Beds</span><span>🚿 2 Baths</span><span>📐 145 m²</span></div>
+          <a href="property.html" class="c-link">View Details →</a>
         </div>
       </div>
 
+      <!-- CARD 5 -->
       <div class="prop-card reveal">
-        <div class="prop-card-img-wrap">
-          <img class="prop-card-img" src="https://images.unsplash.com/photo-1554995207-c18c203602cb?w=700&q=80" alt="Bright room"/>
-          <div class="prop-card-badge">New</div><div class="prop-card-fav">♡</div>
+        <div class="card-img-wrap">
+          <img class="img-main" src="https://images.unsplash.com/photo-1554995207-c18c203602cb?w=700&q=80" alt="azure"/>
+          <img class="img-hover" src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=700&q=80" alt="azure pool"/>
+          <div class="card-badge">New</div><div class="card-fav">♡</div>
+          <div class="card-photo-count">📷 16 Photos</div>
+          <div class="img-dot-row"><div class="idot on"></div><div class="idot"></div><div class="idot"></div></div>
         </div>
-        <div class="prop-card-body">
-          <div class="prop-price">$4,500 <sub>/mo</sub></div>
-          <div class="prop-name">Azure Sky Penthouse</div>
-          <div class="prop-loc">📍 Oyster Bay</div>
-          <div class="prop-meta"><span>🛏 4 Beds</span><span>🚿 3 Baths</span><span>📐 240 m²</span></div>
-          <a href="property.html" style="display:inline-block;margin-top:18px;" class="btn-gold-outline">View Details</a>
+        <div class="card-strip">
+          <img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=200&q=60" alt=""/>
+          <img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=200&q=60" alt=""/>
+          <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=200&q=60" alt=""/>
+          <img src="https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=200&q=60" alt=""/>
+        </div>
+        <div class="card-body">
+          <div class="c-price">$4,500 <sub>/mo</sub></div><div class="c-name">Azure Sky Penthouse</div>
+          <div class="c-loc">📍 Oyster Bay</div>
+          <div class="c-meta"><span>🛏 4 Beds</span><span>🚿 3 Baths</span><span>📐 240 m²</span></div>
+          <a href="property.html" class="c-link">View Details →</a>
         </div>
       </div>
 
-      <div class="prop-card reveal reveal-d2">
-        <div class="prop-card-img-wrap">
-          <img class="prop-card-img" src="https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?w=700&q=80" alt="Apartment"/>
-          <div class="prop-card-fav">♡</div>
+      <!-- CARD 6 -->
+      <div class="prop-card reveal reveal-d1">
+        <div class="card-img-wrap">
+          <img class="img-main" src="https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?w=700&q=80" alt="garden"/>
+          <img class="img-hover" src="https://images.unsplash.com/photo-1484154218962-a197022b5858?w=700&q=80" alt="garden int"/>
+          <div class="card-fav">♡</div>
+          <div class="card-photo-count">📷 10 Photos</div>
+          <div class="img-dot-row"><div class="idot on"></div><div class="idot"></div><div class="idot"></div></div>
         </div>
-        <div class="prop-card-body">
-          <div class="prop-price">$1,450 <sub>/mo</sub></div>
-          <div class="prop-name">Garden Court Residence</div>
-          <div class="prop-loc">📍 Masaki</div>
-          <div class="prop-meta"><span>🛏 2 Beds</span><span>🚿 1 Bath</span><span>📐 100 m²</span></div>
-          <a href="property.html" style="display:inline-block;margin-top:18px;" class="btn-gold-outline">View Details</a>
+        <div class="card-strip">
+          <img src="https://images.unsplash.com/photo-1484154218962-a197022b5858?w=200&q=60" alt=""/>
+          <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=200&q=60" alt=""/>
+          <img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=200&q=60" alt=""/>
+          <img src="https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?w=200&q=60" alt=""/>
+        </div>
+        <div class="card-body">
+          <div class="c-price">$1,450 <sub>/mo</sub></div><div class="c-name">Garden Court Residence</div>
+          <div class="c-loc">📍 Masaki</div>
+          <div class="c-meta"><span>🛏 2 Beds</span><span>🚿 1 Bath</span><span>📐 100 m²</span></div>
+          <a href="property.html" class="c-link">View Details →</a>
+        </div>
+      </div>
+
+      <!-- CARD 7 -->
+      <div class="prop-card reveal">
+        <div class="card-img-wrap">
+          <img class="img-main" src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=700&q=80" alt="pearl"/>
+          <img class="img-hover" src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=700&q=80" alt="pearl int"/>
+          <div class="card-badge out">Exclusive</div><div class="card-fav">♡</div>
+          <div class="card-photo-count">📷 18 Photos</div>
+          <div class="img-dot-row"><div class="idot on"></div><div class="idot"></div><div class="idot"></div></div>
+        </div>
+        <div class="card-strip">
+          <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=200&q=60" alt=""/>
+          <img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=200&q=60" alt=""/>
+          <img src="https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=200&q=60" alt=""/>
+          <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=200&q=60" alt=""/>
+        </div>
+        <div class="card-body">
+          <div class="c-price">$5,800 <sub>/mo</sub></div><div class="c-name">Pearl Bay Villa</div>
+          <div class="c-loc">📍 Oyster Bay</div>
+          <div class="c-meta"><span>🛏 5 Beds</span><span>🚿 4 Baths</span><span>📐 320 m²</span></div>
+          <a href="property.html" class="c-link">View Details →</a>
+        </div>
+      </div>
+
+      <!-- CARD 8 -->
+      <div class="prop-card reveal reveal-d1">
+        <div class="card-img-wrap">
+          <img class="img-main" src="https://images.unsplash.com/photo-1484154218962-a197022b5858?w=700&q=80" alt="kinondoni"/>
+          <img class="img-hover" src="https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?w=700&q=80" alt="kinondoni int"/>
+          <div class="card-fav">♡</div>
+          <div class="card-photo-count">📷 7 Photos</div>
+          <div class="img-dot-row"><div class="idot on"></div><div class="idot"></div></div>
+        </div>
+        <div class="card-strip">
+          <img src="https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?w=200&q=60" alt=""/>
+          <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=200&q=60" alt=""/>
+          <img src="https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=200&q=60" alt=""/>
+          <img src="https://images.unsplash.com/photo-1484154218962-a197022b5858?w=200&q=60" alt=""/>
+        </div>
+        <div class="card-body">
+          <div class="c-price">$950 <sub>/mo</sub></div><div class="c-name">The Kinondoni Classic</div>
+          <div class="c-loc">📍 Kinondoni</div>
+          <div class="c-meta"><span>🛏 1 Bed</span><span>🚿 1 Bath</span><span>📐 65 m²</span></div>
+          <a href="property.html" class="c-link">View Details →</a>
         </div>
       </div>
 
     </div><!-- /prop-grid -->
 
     <div class="pagination">
-      <button class="page-btn active">1</button>
-      <button class="page-btn">2</button>
-      <button class="page-btn">3</button>
-      <button class="page-btn">4</button>
-      <span style="color:var(--muted);font-size:13px;padding:0 8px">…</span>
-      <button class="page-btn">18</button>
-      <button class="page-btn">›</button>
+      <button class="pag-btn on">1</button>
+      <button class="pag-btn">2</button>
+      <button class="pag-btn">3</button>
+      <button class="pag-btn">4</button>
+      <span style="color:var(--muted);font-size:13px;padding:0 6px">…</span>
+      <button class="pag-btn">18</button>
+      <button class="pag-btn">›</button>
     </div>
   </div>
 </div>
@@ -312,12 +526,12 @@
   <div class="footer-top">
     <div class="footer-brand"><a href="index.html" class="nav-logo">Aura <span>Homes</span></a><p>Curating exceptional rental homes across Dar es Salaam. Elevated living, simplified.</p></div>
     <div><div class="footer-col-title">Explore</div><ul class="footer-links"><li><a href="listings.html">All Listings</a></li><li><a href="neighborhoods.html">Neighbourhoods</a></li><li><a href="property.html">Property Detail</a></li></ul></div>
-    <div><div class="footer-col-title">Company</div><ul class="footer-links"><li><a href="about.html">About Us</a></li><li><a href="contact.html">Contact</a></li><li><a href="#">Blog</a></li></ul></div>
+    <div><div class="footer-col-title">Company</div><ul class="footer-links"><li><a href="about.html">About Us</a></li><li><a href="contact.html">Contact</a></li></ul></div>
     <div><div class="footer-col-title">Legal</div><ul class="footer-links"><li><a href="#">Privacy Policy</a></li><li><a href="#">Terms of Use</a></li></ul></div>
   </div>
   <div class="footer-bottom">
     <div class="footer-copy">© 2026 Aura Homes Ltd. All rights reserved.</div>
-    <div class="footer-socials"><a href="#" class="social-link">𝕏</a><a href="#" class="social-link">in</a><a href="#" class="social-link">ig</a></div>
+    <div class="footer-socials"><a href="#" class="social-link">𝕏</a><a href="#" class="social-link">in</a><a href="#" class="social-link">ig</a><a href="#" class="social-link">fb</a></div>
   </div>
 </footer>
 
@@ -329,14 +543,19 @@
   window.addEventListener('scroll',()=>{document.getElementById('nav').classList.toggle('scrolled',scrollY>60);reveal();});
   function reveal(){document.querySelectorAll('.reveal').forEach(el=>{if(el.getBoundingClientRect().top<innerHeight-80)el.classList.add('visible');});}
   reveal();
-  // Filter chips
   document.querySelectorAll('.filter-chip').forEach(chip=>{
     chip.addEventListener('click',()=>{
-      const group=chip.closest('.filter-options');
-      group.querySelectorAll('.filter-chip').forEach(c=>c.classList.remove('active'));
+      const g=chip.closest('.filter-options');
+      g.querySelectorAll('.filter-chip').forEach(c=>c.classList.remove('active'));
       chip.classList.add('active');
     });
   });
+  // Carousel
+  const track=document.getElementById('carTrack');
+  let idx=0;
+  const sw=()=>track.children[0].offsetWidth+18;
+  document.getElementById('carNext').addEventListener('click',()=>{idx=Math.min(idx+1,track.children.length-3);track.style.transform=`translateX(-${idx*sw()}px)`;});
+  document.getElementById('carPrev').addEventListener('click',()=>{idx=Math.max(idx-1,0);track.style.transform=`translateX(-${idx*sw()}px)`;});
 </script>
 </body>
 </html>
