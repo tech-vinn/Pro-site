@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>The Oasis Penthouse | Aura Homes</title>
+<link rel="stylesheet" href="shared.css"/>
+<style>
+/* GALLERY */
+.gallery { display: grid; grid-template-columns: 2fr 1fr; grid-template-rows: 1fr 1fr; gap: 4px; height: 580px; margin-top: 100px; }
+.gallery-main { grid-row: span 2; overflow: hidden; cursor: none; }
+.gallery-main img, .gallery-thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s; display: block; }
+.gallery-main:hover img, .gallery-thumb:hover img { transform: scale(1.04); }
+.gallery-thumb { overflow: hidden; cursor: none; position: relative; }
+.gallery-more { position: relative; }
+.gallery-more-overlay { position: absolute; inset: 0; background: rgba(15,13,11,.65); display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 4px; }
+.gallery-more-overlay span:first-child { font-family: 'Cormorant Garamond', serif; font-size: 32px; color: var(--canvas); }
+.gallery-more-overlay span:last-child { font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+
+/* DETAIL LAYOUT */
+.detail-layout { display: grid; grid-template-columns: 1fr 380px; gap: 50px; padding: 60px; align-items: start; }
+
+/* LEFT */
+.prop-headline { margin-bottom: 10px; }
+.prop-headline .prop-price { font-size: 38px; }
+.prop-tags { display: flex; gap: 8px; flex-wrap: wrap; margin: 18px 0 28px; }
+.prop-spec-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 2px; margin-bottom: 44px; }
+.spec-box { background: var(--card-bg); border: 1px solid var(--border); padding: 20px; text-align: center; }
+.spec-icon { font-size: 22px; margin-bottom: 8px; }
+.spec-val { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 300; color: var(--gold); }
+.spec-key { font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin-top: 4px; }
+
+.detail-section { margin-bottom: 48px; }
+.detail-section-title { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 300; margin-bottom: 16px; padding-bottom: 14px; border-bottom: 1px solid var(--border-sub); }
+.detail-p { font-size: 14px; color: var(--muted); line-height: 1.8; }
+.amenities-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-top: 16px; }
+.amenity { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--muted); padding: 12px 16px; background: rgba(255,255,255,.03); border: 1px solid var(--border-sub); }
+.amenity span:first-child { font-size: 18px; }
+
+/* FLOOR PLAN */
+.floor-plan { background: var(--card-bg); border: 1px solid var(--border); padding: 32px; text-align: center; }
+.floor-plan-img { width: 100%; max-width: 500px; opacity: .7; filter: sepia(.2) brightness(.9); }
+
+/* MAP */
+.map-wrap { background: var(--card-bg); border: 1px solid var(--border); overflow: hidden; height: 300px; display: flex; align-items: center; justify-content: center; position: relative; }
+.map-placeholder { text-align: center; }
+.map-placeholder p { font-size: 13px; color: var(--muted); margin-top: 10px; }
+.map-dot { width: 60px; height: 60px; border-radius: 50%; background: var(--gold-dim); border: 2px solid var(--gold); display: flex; align-items: center; justify-content: center; font-size: 24px; margin: 0 auto; animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{box-shadow:0 0 0 0 rgba(184,147,90,.4)} 50%{box-shadow:0 0 0 20px rgba(184,147,90,0)} }
+
+/* SIDEBAR CARD */
+.booking-card { background: var(--card-bg); border: 1px solid var(--border); padding: 36px; position: sticky; top: 110px; }
+.booking-price { font-family: 'Cormorant Garamond', serif; font-size: 42px; font-weight: 300; color: var(--gold); }
+.booking-price sub { font-size: 18px; color: var(--muted); }
+.booking-divider { height: 1px; background: var(--border-sub); margin: 24px 0; }
+.booking-row { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 10px; }
+.booking-row span:first-child { color: var(--muted); }
+.booking-row.total { font-weight: 500; font-size: 14px; border-top: 1px solid var(--border-sub); padding-top: 14px; margin-top: 14px; }
+.booking-row.total span:last-child { color: var(--gold); }
+.book-btn { width: 100%; padding: 16px; background: var(--gold); border: none; color: var(--ink); font-size: 12px; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; cursor: none; transition: background .3s; margin-top: 20px; }
+.book-btn:hover { background: var(--gold-light); }
+.tour-btn { width: 100%; padding: 14px; background: transparent; border: 1px solid var(--border); color: var(--canvas); font-size: 12px; letter-spacing: .14em; text-transform: uppercase; cursor: none; margin-top: 10px; transition: border-color .3s; }
+.tour-btn:hover { border-color: var(--gold); }
+.agent-box { display: flex; align-items: center; gap: 14px; margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--border-sub); }
+.agent-av { width: 48px; height: 48px; border-radius: 50%; background: #2a2520; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-family: 'Cormorant Garamond', serif; font-size: 20px; color: var(--gold); }
+.agent-name { font-size: 14px; font-weight: 500; }
+.agent-title { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.agent-contact { font-size: 12px; color: var(--gold); text-decoration: none; margin-top: 4px; display: block; }
+
+/* SIMILAR */
+.similar-section { padding: 80px 60px; background: var(--ink2); }
+.similar-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; margin-top: 44px; }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="ring"></div>
+
+<nav id="nav" class="scrolled">
+  <a href="index.html" class="nav-logo">Aura <span>Homes</span></a>
+  <ul class="nav-links">
+    <li><a href="listings.html" class="active">Listings</a></li>
+    <li><a href="neighborhoods.html">Neighbourhoods</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <a href="contact.html" class="nav-cta">Book a Tour</a>
+</nav>
+
+<!-- GALLERY -->
+<div class="gallery">
+  <div class="gallery-main"><img src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1200&q=80" alt="Main view"/></div>
+  <div class="gallery-thumb"><img src="https://images.unsplash.com/photo-1484154218962-a197022b5858?w=700&q=80" alt="Kitchen"/></div>
+  <div class="gallery-thumb gallery-more">
+    <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=700&q=80" alt="Living"/>
+    <div class="gallery-more-overlay"><span>+6</span><span>More Photos</span></div>
+  </div>
+</div>
+
+<!-- DETAIL -->
+<div class="detail-layout">
+
+  <!-- LEFT CONTENT -->
+  <div>
+    <div style="margin-bottom:10px"><div class="breadcrumb"><a href="index.html">Home</a><span>/</span><a href="listings.html">Listings</a><span>/</span><span>The Oasis Penthouse</span></div></div>
+
+    <div class="prop-headline">
+      <div class="prop-price" style="font-family:'Cormorant Garamond',serif;font-size:38px;font-weight:300;color:var(--gold)">$3,200 <span style="font-size:18px;color:var(--muted)">/month</span></div>
+      <h1 style="font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:300;margin-top:6px;">The Oasis Penthouse</h1>
+      <p style="font-size:14px;color:var(--muted);margin-top:8px">📍 Plot 12, Ocean Drive, Masaki Peninsula, Dar es Salaam</p>
+    </div>
+
+    <div class="prop-tags">
+      <span class="tag-pill">Penthouse</span>
+      <span class="tag-pill">Furnished</span>
+      <span class="tag-pill">Sea View</span>
+      <span class="tag-pill">Pet Friendly</span>
+      <span class="tag-pill">Available Now</span>
+    </div>
+
+    <div class="prop-spec-grid">
+      <div class="spec-box reveal"><div class="spec-icon">🛏</div><div class="spec-val">3</div><div class="spec-key">Bedrooms</div></div>
+      <div class="spec-box reveal reveal-d1"><div class="spec-icon">🚿</div><div class="spec-val">2</div><div class="spec-key">Bathrooms</div></div>
+      <div class="spec-box reveal reveal-d2"><div class="spec-icon">📐</div><div class="spec-val">180</div><div class="spec-key">Square Metres</div></div>
+      <div class="spec-box reveal reveal-d3"><div class="spec-icon">🏢</div><div class="spec-val">14th</div><div class="spec-key">Floor</div></div>
+    </div>
+
+    <!-- Description -->
+    <div class="detail-section reveal">
+      <div class="detail-section-title">About This Property</div>
+      <p class="detail-p">The Oasis Penthouse sits atop one of Masaki's most prestigious residential towers, offering sweeping panoramic views of the Indian Ocean and the city skyline. With floor-to-ceiling windows flooding every room with natural light, the apartment has been meticulously designed to blend understated luxury with everyday comfort.</p>
+      <p class="detail-p" style="margin-top:14px">The open-plan living and dining area flows seamlessly onto a private terrace — perfect for entertaining or quiet mornings with a view. The chef's kitchen is fitted with premium European appliances, stone countertops, and custom cabinetry. Each of the three bedrooms features an en-suite bathroom with heated floors and rainfall showers.</p>
+    </div>
+
+    <!-- Amenities -->
+    <div class="detail-section reveal">
+      <div class="detail-section-title">Amenities & Features</div>
+      <div class="amenities-grid">
+        <div class="amenity"><span>🏊</span><span>Swimming Pool</span></div>
+        <div class="amenity"><span>🏋️</span><span>Fitness Centre</span></div>
+        <div class="amenity"><span>🔒</span><span>24hr Security</span></div>
+        <div class="amenity"><span>🚗</span><span>2 Parking Bays</span></div>
+        <div class="amenity"><span>⚡</span><span>Generator Backup</span></div>
+        <div class="amenity"><span>🌊</span><span>Ocean View</span></div>
+        <div class="amenity"><span>🐾</span><span>Pet Friendly</span></div>
+        <div class="amenity"><span>📶</span><span>Fibre Internet</span></div>
+        <div class="amenity"><span>❄️</span><span>Central A/C</span></div>
+        <div class="amenity"><span>🛗</span><span>Private Lift</span></div>
+        <div class="amenity"><span>🌿</span><span>Private Terrace</span></div>
+        <div class="amenity"><span>🍳</span><span>Full Kitchen</span></div>
+      </div>
+    </div>
+
+    <!-- Floor Plan -->
+    <div class="detail-section reveal">
+      <div class="detail-section-title">Floor Plan</div>
+      <div class="floor-plan">
+        <img class="floor-plan-img" src="https://images.unsplash.com/photo-1626178793926-22b28830aa30?w=800&q=60" alt="Floor plan"/>
+        <p style="font-size:12px;color:var(--muted);margin-top:14px;letter-spacing:.06em">Total area: 180 m² · Living: 72 m² · Kitchen: 24 m² · Master Bed: 28 m²</p>
+      </div>
+    </div>
+
+    <!-- Location -->
+    <div class="detail-section reveal">
+      <div class="detail-section-title">Location</div>
+      <div class="map-wrap">
+        <div class="map-placeholder">
+          <div class="map-dot">📍</div>
+          <p>Masaki Peninsula, Dar es Salaam</p>
+          <p style="margin-top:6px;font-size:11px">5 min to Ocean Road · 8 min to Slipway · 20 min to Julius Nyerere Airport</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lease Terms -->
+    <div class="detail-section reveal">
+      <div class="detail-section-title">Lease Terms</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+        <div style="padding:18px;background:rgba(255,255,255,.03);border:1px solid var(--border-sub)"><div style="font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:6px">Minimum Lease</div><div style="font-size:15px">12 Months</div></div>
+        <div style="padding:18px;background:rgba(255,255,255,.03);border:1px solid var(--border-sub)"><div style="font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:6px">Deposit Required</div><div style="font-size:15px">2 Months</div></div>
+        <div style="padding:18px;background:rgba(255,255,255,.03);border:1px solid var(--border-sub)"><div style="font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:6px">Available From</div><div style="font-size:15px">1 April 2026</div></div>
+        <div style="padding:18px;background:rgba(255,255,255,.03);border:1px solid var(--border-sub)"><div style="font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:6px">Utilities</div><div style="font-size:15px">Tenant Pays</div></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- RIGHT: BOOKING CARD -->
+  <div>
+    <div class="booking-card reveal">
+      <div class="booking-price">$3,200 <sub>/mo</sub></div>
+      <p style="font-size:12px;color:var(--muted);margin-top:6px">Plus 2-month security deposit</p>
+      <div class="booking-divider"></div>
+
+      <div class="form-group">
+        <label class="form-label">Your Name</label>
+        <input class="form-input" type="text" placeholder="Full name"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email Address</label>
+        <input class="form-input" type="email" placeholder="your@email.com"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Phone Number</label>
+        <input class="form-input" type="tel" placeholder="+255 700 000 000"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Move-in Date</label>
+        <input class="form-input" type="date"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Message (Optional)</label>
+        <textarea class="form-textarea" placeholder="Any questions or requirements..." style="min-height:90px"></textarea>
+      </div>
+
+      <div class="booking-divider"></div>
+      <div class="booking-row"><span>Monthly Rent</span><span>$3,200</span></div>
+      <div class="booking-row"><span>Security Deposit</span><span>$6,400</span></div>
+      <div class="booking-row"><span>Agency Fee</span><span>$0</span></div>
+      <div class="booking-row total"><span>Total Due on Move-in</span><span>$9,600</span></div>
+
+      <button class="book-btn">Apply for This Property</button>
+      <button class="tour-btn">Schedule a Viewing</button>
+
+      <div class="agent-box">
+        <div class="agent-av">T</div>
+        <div>
+          <div class="agent-name">Tariq Al-Mansouri</div>
+          <div class="agent-title">Senior Property Consultant</div>
+          <a href="tel:+255700123456" class="agent-contact">+255 700 123 456</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /detail-layout -->
+
+<!-- SIMILAR PROPERTIES -->
+<div class="similar-section">
+  <div class="section-tag">You May Also Like</div>
+  <h2 class="section-h2">Similar <em>Properties</em></h2>
+  <div class="similar-grid">
+    <div class="prop-card reveal">
+      <div class="prop-card-img-wrap"><img class="prop-card-img" src="https://images.unsplash.com/photo-1554995207-c18c203602cb?w=700&q=80" alt=""/><div class="prop-card-fav">♡</div></div>
+      <div class="prop-card-body"><div class="prop-price">$4,500 <sub>/mo</sub></div><div class="prop-name">Azure Sky Penthouse</div><div class="prop-loc">📍 Oyster Bay</div><div class="prop-meta"><span>🛏 4 Beds</span><span>🚿 3 Baths</span><span>📐 240 m²</span></div></div>
+    </div>
+    <div class="prop-card reveal reveal-d1">
+      <div class="prop-card-img-wrap"><img class="prop-card-img" src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=700&q=80" alt=""/><div class="prop-card-fav">♡</div></div>
+      <div class="prop-card-body"><div class="prop-price">$2,100 <sub>/mo</sub></div><div class="prop-name">Msasani Shore Apartment</div><div class="prop-loc">📍 Msasani</div><div class="prop-meta"><span>🛏 3 Beds</span><span>🚿 2 Baths</span><span>📐 145 m²</span></div></div>
+    </div>
+    <div class="prop-card reveal reveal-d2">
+      <div class="prop-card-img-wrap"><img class="prop-card-img" src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=700&q=80" alt=""/><div class="prop-card-fav">♡</div></div>
+      <div class="prop-card-body"><div class="prop-price">$1,950 <sub>/mo</sub></div><div class="prop-name">Serengeti Residences</div><div class="prop-loc">📍 Mikocheni</div><div class="prop-meta"><span>🛏 2 Beds</span><span>🚿 2 Baths</span><span>📐 120 m²</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand"><a href="index.html" class="nav-logo">Aura <span>Homes</span></a><p>Curating exceptional rental homes across Dar es Salaam.</p></div>
+    <div><div class="footer-col-title">Explore</div><ul class="footer-links"><li><a href="listings.html">All Listings</a></li><li><a href="neighborhoods.html">Neighbourhoods</a></li></ul></div>
+    <div><div class="footer-col-title">Company</div><ul class="footer-links"><li><a href="about.html">About Us</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+    <div><div class="footer-col-title">Legal</div><ul class="footer-links"><li><a href="#">Privacy Policy</a></li><li><a href="#">Terms of Use</a></li></ul></div>
+  </div>
+  <div class="footer-bottom"><div class="footer-copy">© 2026 Aura Homes Ltd.</div><div class="footer-socials"><a href="#" class="social-link">𝕏</a><a href="#" class="social-link">in</a><a href="#" class="social-link">ig</a></div></div>
+</footer>
+
+<script>
+  const cur=document.getElementById('cursor'),ring=document.getElementById('ring');
+  let rx=0,ry=0;
+  document.addEventListener('mousemove',e=>{cur.style.left=e.clientX+'px';cur.style.top=e.clientY+'px';});
+  (function a(){rx+=(parseFloat(cur.style.left||0)-rx)*.12;ry+=(parseFloat(cur.style.top||0)-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(a);})();
+  window.addEventListener('scroll',()=>{document.getElementById('nav').classList.toggle('scrolled',scrollY>60);reveal();});
+  function reveal(){document.querySelectorAll('.reveal').forEach(el=>{if(el.getBoundingClientRect().top<innerHeight-80)el.classList.add('visible');});}
+  reveal();
+</script>
+</body>
+</html>

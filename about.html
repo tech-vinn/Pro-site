@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>About Us | Aura Homes</title>
+<link rel="stylesheet" href="shared.css"/>
+<style>
+/* MISSION */
+.mission { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+.mission-img { position: relative; }
+.mission-img img { width: 100%; display: block; }
+.mission-img-accent { position: absolute; top: -24px; left: -24px; width: 120px; height: 120px; border: 1px solid var(--gold); pointer-events: none; }
+.mission-quote { font-family: 'Cormorant Garamond', serif; font-size: 32px; font-style: italic; font-weight: 300; line-height: 1.35; color: var(--canvas); margin: 28px 0; border-left: 2px solid var(--gold); padding-left: 24px; }
+
+/* STATS BAR */
+.stats-bar { background: var(--card-bg); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 60px; }
+.stats-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 2px; }
+.stat-block { text-align: center; padding: 40px 20px; border: 1px solid var(--border); background: rgba(255,255,255,.02); transition: background .3s; }
+.stat-block:hover { background: var(--gold-dim); }
+.stat-block-num { font-family: 'Cormorant Garamond', serif; font-size: 62px; font-weight: 300; color: var(--gold); line-height: 1; }
+.stat-block-label { font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); margin-top: 8px; }
+
+/* STORY TIMELINE */
+.timeline { position: relative; padding: 80px 60px; }
+.timeline-line { position: absolute; left: 50%; top: 80px; bottom: 80px; width: 1px; background: linear-gradient(to bottom, transparent, var(--gold) 20%, var(--gold) 80%, transparent); transform: translateX(-50%); }
+.timeline-item { display: grid; grid-template-columns: 1fr 60px 1fr; gap: 0; align-items: center; margin-bottom: 60px; }
+.timeline-item:nth-child(even) .tl-content { grid-column: 3; grid-row: 1; }
+.timeline-item:nth-child(even) .tl-empty { grid-column: 1; grid-row: 1; }
+.tl-content { padding: 28px; background: var(--card-bg); border: 1px solid var(--border); transition: border-color .3s; }
+.tl-content:hover { border-color: var(--gold); }
+.tl-year { font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 300; color: var(--gold); margin-bottom: 8px; }
+.tl-title { font-size: 16px; font-weight: 500; margin-bottom: 8px; }
+.tl-text { font-size: 13px; color: var(--muted); line-height: 1.7; }
+.tl-dot { width: 14px; height: 14px; border-radius: 50%; background: var(--gold); border: 2px solid var(--ink); margin: 0 auto; position: relative; z-index: 1; }
+
+/* TEAM */
+.team-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 28px; margin-top: 56px; }
+.team-card { background: var(--card-bg); border: 1px solid var(--border); overflow: hidden; transition: border-color .4s, transform .4s; }
+.team-card:hover { border-color: var(--gold); transform: translateY(-4px); }
+.team-img { width: 100%; height: 300px; object-fit: cover; object-position: top; display: block; filter: grayscale(.2); transition: filter .4s; }
+.team-card:hover .team-img { filter: grayscale(0); }
+.team-body { padding: 24px; }
+.team-name { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 300; margin-bottom: 4px; }
+.team-role { font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; }
+.team-bio { font-size: 12px; color: var(--muted); line-height: 1.7; }
+
+/* VALUES */
+.values-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; margin-top: 56px; }
+.value-card { padding: 36px 28px; border: 1px solid var(--border); background: rgba(255,255,255,.02); transition: border-color .3s, background .3s; }
+.value-card:hover { border-color: var(--gold); background: var(--gold-dim); }
+.value-num { font-family: 'Cormorant Garamond', serif; font-size: 64px; font-weight: 300; color: rgba(184,147,90,.2); line-height: 1; margin-bottom: 14px; }
+.value-title { font-size: 18px; font-weight: 500; margin-bottom: 12px; }
+.value-text { font-size: 13px; color: var(--muted); line-height: 1.75; }
+
+/* AWARDS */
+.awards-row { display: flex; gap: 24px; flex-wrap: wrap; margin-top: 44px; }
+.award-item { display: flex; align-items: center; gap: 14px; padding: 20px 24px; border: 1px solid var(--border); background: rgba(255,255,255,.02); flex: 1; min-width: 220px; }
+.award-icon { font-size: 28px; }
+.award-title { font-size: 14px; font-weight: 500; }
+.award-year { font-size: 11px; color: var(--muted); margin-top: 3px; }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="ring"></div>
+
+<nav id="nav">
+  <a href="index.html" class="nav-logo">Aura <span>Homes</span></a>
+  <ul class="nav-links">
+    <li><a href="listings.html">Listings</a></li>
+    <li><a href="neighborhoods.html">Neighbourhoods</a></li>
+    <li><a href="about.html" class="active">About</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <a href="contact.html" class="nav-cta">Book a Tour</a>
+</nav>
+
+<!-- PAGE HEADER -->
+<div class="page-header" data-bg-text="ABOUT">
+  <div class="breadcrumb"><a href="index.html">Home</a><span>/</span><span>About Us</span></div>
+  <div class="section-tag">Our Story</div>
+  <h1 class="section-h2">Who We Are,<br/><em>Why We Care</em></h1>
+  <p class="section-sub" style="margin-top:12px">Aura Homes was founded on a simple belief: finding the right home should feel as elevated as the home itself.</p>
+</div>
+
+<!-- MISSION -->
+<section class="section">
+  <div class="mission">
+    <div class="mission-img reveal">
+      <div class="mission-img-accent"></div>
+      <img src="https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=800&q=80" alt="Our Office"/>
+    </div>
+    <div class="reveal reveal-d2">
+      <div class="section-tag">Our Mission</div>
+      <h2 class="section-h2">Elevating the<br/><em>Rental Experience</em></h2>
+      <blockquote class="mission-quote">"We believe every person deserves a home that matches their ambition."</blockquote>
+      <p class="section-sub" style="max-width:100%">Aura Homes was born out of frustration with an industry that treated renting as transactional. We reimagined every step — from the first search to the day you get your keys — with transparency, care, and an unwavering commitment to quality.</p>
+      <p class="section-sub" style="max-width:100%;margin-top:16px">Today we manage over 320 premium properties across Dar es Salaam, serving expats, professionals, and families who expect more from where they live.</p>
+      <a href="listings.html" class="btn-primary" style="margin-top:32px;display:inline-block">Browse Our Properties</a>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stats-row">
+    <div class="stat-block reveal"><div class="stat-block-num">320+</div><div class="stat-block-label">Active Listings</div></div>
+    <div class="stat-block reveal reveal-d1"><div class="stat-block-num">98%</div><div class="stat-block-label">Client Satisfaction</div></div>
+    <div class="stat-block reveal reveal-d2"><div class="stat-block-num">2,400+</div><div class="stat-block-label">Families Housed</div></div>
+    <div class="stat-block reveal reveal-d3"><div class="stat-block-num">7+</div><div class="stat-block-label">Years in Business</div></div>
+  </div>
+</div>
+
+<!-- COMPANY TIMELINE -->
+<section class="section section-dark">
+  <div style="text-align:center;max-width:540px;margin:0 auto 70px">
+    <div class="section-tag" style="justify-content:center">Our Journey</div>
+    <h2 class="section-h2">From Startup to<br/><em>Market Leader</em></h2>
+  </div>
+  <div class="timeline">
+    <div class="timeline-line"></div>
+    <div class="timeline-item reveal">
+      <div class="tl-content"><div class="tl-year">2018</div><div class="tl-title">Founded in Masaki</div><div class="tl-text">Two former architects launch Aura Homes with 8 listings and a vision to make premium rentals accessible.</div></div>
+      <div><div class="tl-dot"></div></div>
+      <div class="tl-empty"></div>
+    </div>
+    <div class="timeline-item reveal reveal-d1">
+      <div class="tl-empty"></div>
+      <div><div class="tl-dot"></div></div>
+      <div class="tl-content"><div class="tl-year">2019</div><div class="tl-title">First 100 Properties</div><div class="tl-text">Rapid expansion across Oyster Bay, Mikocheni and Msasani. Concierge service introduced.</div></div>
+    </div>
+    <div class="timeline-item reveal reveal-d2">
+      <div class="tl-content"><div class="tl-year">2021</div><div class="tl-title">Digital Platform Launch</div><div class="tl-text">Full online search, virtual tours, and digital lease signing introduced — a first in DSM.</div></div>
+      <div><div class="tl-dot"></div></div>
+      <div class="tl-empty"></div>
+    </div>
+    <div class="timeline-item reveal reveal-d3">
+      <div class="tl-empty"></div>
+      <div><div class="tl-dot"></div></div>
+      <div class="tl-content"><div class="tl-year">2023</div><div class="tl-title">Best Agency Award</div><div class="tl-text">Named Best Residential Rental Agency in Tanzania at the East Africa Property Awards.</div></div>
+    </div>
+    <div class="timeline-item reveal reveal-d4">
+      <div class="tl-content"><div class="tl-year">2026</div><div class="tl-title">320+ Properties & Growing</div><div class="tl-text">Now serving 12 neighbourhoods with a team of 28 dedicated professionals and a 98% satisfaction rate.</div></div>
+      <div><div class="tl-dot"></div></div>
+      <div class="tl-empty"></div>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section class="section">
+  <div class="reveal">
+    <div class="section-tag">Meet the Team</div>
+    <h2 class="section-h2">The People Behind<br/><em>Your Home</em></h2>
+    <p class="section-sub">Our agents are more than salespeople — they're trusted advisors who understand Dar es Salaam's property market intimately.</p>
+  </div>
+  <div class="team-grid">
+    <div class="team-card reveal">
+      <img class="team-img" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80" alt="CEO"/>
+      <div class="team-body">
+        <div class="team-name">David Kimani</div>
+        <div class="team-role">Co-Founder & CEO</div>
+        <div class="team-bio">Former architect with 15 years experience shaping Dar es Salaam's skyline. David oversees strategy and leads our premium portfolio.</div>
+      </div>
+    </div>
+    <div class="team-card reveal reveal-d1">
+      <img class="team-img" src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=600&q=80" alt="COO"/>
+      <div class="team-body">
+        <div class="team-name">Aisha Mwangi</div>
+        <div class="team-role">Co-Founder & COO</div>
+        <div class="team-bio">Finance and operations specialist who built the systems that allow Aura to scale without compromising on service quality.</div>
+      </div>
+    </div>
+    <div class="team-card reveal reveal-d2">
+      <img class="team-img" src="https://images.unsplash.com/photo-1556157382-97eda2f9e2bf?w=600&q=80" alt="Head of Concierge"/>
+      <div class="team-body">
+        <div class="team-name">Tariq Al-Mansouri</div>
+        <div class="team-role">Head of Concierge</div>
+        <div class="team-bio">Our most decorated agent with over 500 successful placements. Tariq personally oversees all premium property transactions.</div>
+      </div>
+    </div>
+    <div class="team-card reveal reveal-d1">
+      <img class="team-img" src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=600&q=80" alt="Agent"/>
+      <div class="team-body">
+        <div class="team-name">Priya Nair</div>
+        <div class="team-role">Senior Property Consultant</div>
+        <div class="team-bio">Specialises in furnished and short-stay apartments for expatriates and visiting professionals across Masaki and Oyster Bay.</div>
+      </div>
+    </div>
+    <div class="team-card reveal reveal-d2">
+      <img class="team-img" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=600&q=80" alt="Agent"/>
+      <div class="team-body">
+        <div class="team-name">Marcus Owusu</div>
+        <div class="team-role">Tenant Relations Manager</div>
+        <div class="team-bio">Dedicated to ensuring every tenant has a seamless move-in, a well-maintained home, and fair treatment throughout their tenancy.</div>
+      </div>
+    </div>
+    <div class="team-card reveal reveal-d3">
+      <img class="team-img" src="https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=600&q=80" alt="Marketing"/>
+      <div class="team-body">
+        <div class="team-name">Zara Hussain</div>
+        <div class="team-role">Head of Digital & Marketing</div>
+        <div class="team-bio">Built and manages Aura's digital presence, virtual tour platform, and the property alert system used by 4,200+ renters.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VALUES -->
+<section class="section section-card" style="border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+  <div class="reveal" style="text-align:center;max-width:540px;margin:0 auto">
+    <div class="section-tag" style="justify-content:center">What We Stand For</div>
+    <h2 class="section-h2">Our Core <em>Values</em></h2>
+  </div>
+  <div class="values-grid">
+    <div class="value-card reveal"><div class="value-num">01</div><div class="value-title">Transparency</div><div class="value-text">No hidden fees. No bait-and-switch listings. Every price, term, and condition disclosed upfront. Always.</div></div>
+    <div class="value-card reveal reveal-d1"><div class="value-num">02</div><div class="value-title">Excellence</div><div class="value-text">We curate, not aggregate. Every listing passes our quality threshold before a single tenant sees it.</div></div>
+    <div class="value-card reveal reveal-d2"><div class="value-num">03</div><div class="value-title">Empathy</div><div class="value-text">Finding a home is personal. We treat every client as an individual, never a transaction.</div></div>
+    <div class="value-card reveal"><div class="value-num">04</div><div class="value-title">Accountability</div><div class="value-text">We hold ourselves to the same standards we set for our landlords. No excuses, only solutions.</div></div>
+    <div class="value-card reveal reveal-d1"><div class="value-num">05</div><div class="value-title">Innovation</div><div class="value-text">Digital contracts, virtual tours, real-time alerts — we use technology to remove friction from renting.</div></div>
+    <div class="value-card reveal reveal-d2"><div class="value-num">06</div><div class="value-title">Community</div><div class="value-text">Our tenants are neighbours. We invest in building communities, not just filling apartments.</div></div>
+  </div>
+</section>
+
+<!-- AWARDS -->
+<section class="section">
+  <div class="reveal">
+    <div class="section-tag">Recognition</div>
+    <h2 class="section-h2">Awards &amp; <em>Accolades</em></h2>
+  </div>
+  <div class="awards-row">
+    <div class="award-item reveal"><div class="award-icon">🏆</div><div><div class="award-title">Best Rental Agency — Tanzania</div><div class="award-year">East Africa Property Awards, 2023</div></div></div>
+    <div class="award-item reveal reveal-d1"><div class="award-icon">⭐</div><div><div class="award-title">Top Rated on Google</div><div class="award-year">4.9/5 from 640+ reviews</div></div></div>
+    <div class="award-item reveal reveal-d2"><div class="award-icon">🌍</div><div><div class="award-title">Excellence in PropTech</div><div class="award-year">Africa Digital Awards, 2024</div></div></div>
+    <div class="award-item reveal reveal-d3"><div class="award-icon">🤝</div><div><div class="award-title">Best Tenant Experience</div><div class="award-year">DSM Property Expo, 2025</div></div></div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand"><a href="index.html" class="nav-logo">Aura <span>Homes</span></a><p>Curating exceptional rental homes across Dar es Salaam. Elevated living, simplified.</p></div>
+    <div><div class="footer-col-title">Explore</div><ul class="footer-links"><li><a href="listings.html">All Listings</a></li><li><a href="neighborhoods.html">Neighbourhoods</a></li></ul></div>
+    <div><div class="footer-col-title">Company</div><ul class="footer-links"><li><a href="about.html">About Us</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+    <div><div class="footer-col-title">Legal</div><ul class="footer-links"><li><a href="#">Privacy Policy</a></li><li><a href="#">Terms of Use</a></li></ul></div>
+  </div>
+  <div class="footer-bottom"><div class="footer-copy">© 2026 Aura Homes Ltd. All rights reserved.</div><div class="footer-socials"><a href="#" class="social-link">𝕏</a><a href="#" class="social-link">in</a><a href="#" class="social-link">ig</a></div></div>
+</footer>
+
+<script>
+  const cur=document.getElementById('cursor'),ring=document.getElementById('ring');
+  let rx=0,ry=0;
+  document.addEventListener('mousemove',e=>{cur.style.left=e.clientX+'px';cur.style.top=e.clientY+'px';});
+  (function a(){rx+=(parseFloat(cur.style.left||0)-rx)*.12;ry+=(parseFloat(cur.style.top||0)-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(a);})();
+  window.addEventListener('scroll',()=>{document.getElementById('nav').classList.toggle('scrolled',scrollY>60);reveal();});
+  function reveal(){document.querySelectorAll('.reveal').forEach(el=>{if(el.getBoundingClientRect().top<innerHeight-80)el.classList.add('visible');});}
+  reveal();
+</script>
+</body>
+</html>
